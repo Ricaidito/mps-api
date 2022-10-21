@@ -1,11 +1,15 @@
-import pprint
+from fastapi import FastAPI
 from face_recognition_helper import recognize_by_image_path
 
+app = FastAPI()
 
-def main():
+
+@app.get("/")
+async def root():
+    return {"message": "Hello world!"}
+
+
+@app.get("/recon")
+async def recon():
     results = recognize_by_image_path("unknown.jpg")
-    pprint.pprint(results)
-
-
-if __name__ == "__main__":
-    main()
+    return {"result": results["foundMatch"]}
