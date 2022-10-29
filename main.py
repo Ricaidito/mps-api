@@ -4,9 +4,6 @@ from services.face_recognition_service import recognize_by_image_path, recognize
 
 
 app = FastAPI()
-TEST_PATH = "unknown.jpg"
-
-
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 
@@ -17,7 +14,7 @@ async def root():
 
 @app.get("/recon")
 async def recon_test():
-    results = recognize_by_image_path(TEST_PATH)
+    results = recognize_by_image_path()
     return {"result": results["foundMatch"]}
 
 

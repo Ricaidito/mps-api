@@ -1,4 +1,3 @@
-import base64
 import os
 import cv2
 import face_recognition
@@ -10,6 +9,7 @@ from fastapi import UploadFile
 
 # Folder where the known images are stored
 KNOWN_IMAGES_FOLDER_PATH = "./images"
+TEST_PATH = "./images/test.jpg"
 
 
 # Load all the known images and get their paths and file names
@@ -48,7 +48,7 @@ def get_matches(results: list[bool], image_files: list[str]) -> list[str]:
 
 
 # Do the face recognition given an image and it's path to compare
-def recognize_by_image_path(image_to_compare_path: str) -> dict[str, Any]:
+def recognize_by_image_path(image_to_compare_path: str = TEST_PATH) -> dict[str, Any]:
     images, paths = load_images()
     encodings = enconde_images(paths)
 
@@ -103,7 +103,7 @@ async def recognize_by_image_file(file: UploadFile):
 
 
 def main():
-    result = recognize_by_image_path("./test.jpg")
+    result = recognize_by_image_path()
     print(result)
 
 
