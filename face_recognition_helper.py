@@ -1,8 +1,11 @@
+import base64
 import os
 import cv2
 import face_recognition
+import numpy as np
 from typing import Any
 from numpy import ndarray
+from fastapi import UploadFile
 
 
 # Folder where the known images are stored
@@ -59,6 +62,34 @@ def recognize_by_image_path(image_to_compare_path: str) -> dict[str, Any]:
 
     recognition = {
         "image": image_to_compare_path,
+        "foundMatch": any(results),
+        "matches": matches,
+        "resultsArray": results,
+        "numberOfImagesCompared": len(results)
+
+    }
+
+    return recognition
+
+
+# Do the face recognition given an image uploaded by the user
+async def recognize_by_image_file(file: UploadFile):
+    images, paths = load_images()
+    encodings = enconde_images(paths)
+
+    img_bytes = await file.read()
+    img_array = np.fromstring(img_bytes, np.uint8)
+
+    img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    img_econding = face_recognition.face_encodings(rgb_img)[0]
+
+    results = face_recognition.compare_faces(encodings, img_econding)
+
+    matches = get_matches(results, images)
+
+    recognition = {
+        "image": file.filename,
         "foundMatch": any(results),
         "matches": matches,
         "resultsArray": results,
