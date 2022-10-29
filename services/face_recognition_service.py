@@ -103,7 +103,7 @@ async def recognize_by_image_file(file: UploadFile):
 
 
 def main():
-    result = recognize_by_image_path("unknown.jpg")
+    result = recognize_by_image_path("./test.jpg")
     print(result)
 
 

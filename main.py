@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile
 from fastapi.staticfiles import StaticFiles
-from face_recognition_helper import recognize_by_image_path, recognize_by_image_file
+from services.face_recognition_service import recognize_by_image_path, recognize_by_image_file
 
 
 app = FastAPI()
@@ -16,7 +16,7 @@ async def root():
 
 
 @app.get("/recon")
-async def recon():
+async def recon_test():
     results = recognize_by_image_path(TEST_PATH)
     return {"result": results["foundMatch"]}
 
