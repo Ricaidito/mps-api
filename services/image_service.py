@@ -2,15 +2,18 @@ import os
 from fastapi import UploadFile
 
 
+# Folder where the known images are stored
 IMAGES_FOLDER_PATH = "./images/"
 
 
+# Save the picture the user uploads on the images folder
 def save_picture(picture: UploadFile):
     file_location = IMAGES_FOLDER_PATH + picture.filename
     with open(file_location, "wb+") as f:
         f.write(picture.file.read())
 
 
+# Get the images json array with the name of the file and it's link to get it
 def get_all_known_images():
     images = []
     image_names = os.listdir(IMAGES_FOLDER_PATH)
