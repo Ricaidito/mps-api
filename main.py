@@ -1,10 +1,22 @@
 from fastapi import FastAPI, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from services.face_recognition_service import FaceRecognitionService
 from services.image_service import ImageService
 
 
 app = FastAPI()
+
+origins = ["http://localhost:3000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 
@@ -16,7 +28,7 @@ def index():
 @app.get("/get-images")
 def get_all_images():
     images = ImageService.get_all_images()
-    return {"images": images}
+    return images
 
 
 @app.post("/upload-person")
