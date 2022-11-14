@@ -20,10 +20,19 @@ def get_all_known_images():
     for img_name in image_names:
         img_obj = {
             "fileName": img_name,
-            "imagePath": f"http://127.0.0.1:8000/images/{img_name}"
+            "imagePath": f"http://127.0.0.1:8000/images/{img_name}",
+            "personName": img_name.split(".")[0]
         }
         images.append(img_obj)
     return images
+
+
+def delete_image_from_path(image_path: str):
+    path = f"{IMAGES_FOLDER_PATH}/{image_path}"
+    if os.path.exists(path):
+        os.remove(path)
+        return True
+    return False
 
 
 # Test
@@ -38,6 +47,9 @@ class ImageService:
 
     def get_all_images():
         return get_all_known_images()
+
+    def delete_image(path):
+        return delete_image_from_path(path)
 
 
 if __name__ == "__main__":

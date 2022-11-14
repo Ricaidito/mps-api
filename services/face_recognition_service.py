@@ -24,7 +24,7 @@ def load_images() -> tuple[str, str]:
 
 
 # Get the encondings for all of the known images
-def enconde_images(paths: list[str]) -> list[ndarray]:
+def encode_images(paths: list[str]) -> list[ndarray]:
     encodings: list[ndarray] = []
 
     for image in paths:
@@ -50,7 +50,7 @@ def get_matches(results: list[bool], image_files: list[str]) -> list[str]:
 # Do the face recognition given an image and it's path to compare
 def recognize_by_image_path(image_to_compare_path: str) -> dict[str, Any]:
     images, paths = load_images()
-    encodings = enconde_images(paths)
+    encodings = encode_images(paths)
 
     img = cv2.imread(image_to_compare_path)
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -72,7 +72,7 @@ def recognize_by_image_path(image_to_compare_path: str) -> dict[str, Any]:
 # Do the face recognition given an image uploaded by the user
 async def recognize_by_image_file(person_image: UploadFile):
     images, paths = load_images()
-    encodings = enconde_images(paths)
+    encodings = encode_images(paths)
 
     img_bytes = await person_image.read()
     img_array = np.fromstring(img_bytes, np.uint8)
@@ -90,10 +90,15 @@ async def recognize_by_image_file(person_image: UploadFile):
 
     matches = get_matches(results, images)
 
+    matches_urls = []
+
+    for match in matches:
+        matches_urls.append(f"http://127.0.0.1:8000/images/{match}")
+
     return {
         "image": person_image.filename,
         "foundMatch": any(results),
-        "matches": matches,
+        "matches": matches_urls,
         "resultsArray": results,
         "numberOfImagesCompared": len(results)
     }
