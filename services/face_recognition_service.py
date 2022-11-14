@@ -100,7 +100,8 @@ async def recognize_by_image_file(person_image: UploadFile):
         "foundMatch": any(results),
         "matches": matches_urls,
         "resultsArray": results,
-        "numberOfImagesCompared": len(results)
+        "numberOfImagesCompared": len(results),
+        "images": matches
     }
 
 

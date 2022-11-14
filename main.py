@@ -41,13 +41,13 @@ async def recognize_face_by_file(person_picture: UploadFile):
     result = await FaceRecognitionService.recognize_by_image(person_picture)
     if "error" in result.keys():
         return result
-    return {"result": result["foundMatch"], "matches": result["matches"]}
+    return {"result": result["foundMatch"], "matches": result["matches"], "images": result["images"]}
 
 
 @app.delete("/delete-image/{fileName}")
 def delete_person_image(fileName: str):
     result = ImageService.delete_image(fileName)
-    return {"deleted": result}
+    return result
 
 
 if __name__ == "__main__":

@@ -27,6 +27,7 @@ def get_all_known_images():
     return images
 
 
+# Delete the image from its filename
 def delete_image_from_path(image_path: str):
     path = f"{IMAGES_FOLDER_PATH}/{image_path}"
     if os.path.exists(path):
