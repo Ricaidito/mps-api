@@ -14,7 +14,7 @@ def save_picture(picture: UploadFile):
 
 
 # Get the images json array with the name of the file and it's link to get it
-def get_all_known_images():
+def get_all_known_images() -> list[dict[str, str]]:
     images = []
     image_names = os.listdir(IMAGES_FOLDER_PATH)
     for img_name in image_names:
@@ -28,7 +28,7 @@ def get_all_known_images():
 
 
 # Delete the image from its filename
-def delete_image_from_path(image_path: str):
+def delete_image_from_path(image_path: str) -> bool:
     path = f"{IMAGES_FOLDER_PATH}/{image_path}"
     if os.path.exists(path):
         os.remove(path)
