@@ -1,9 +1,10 @@
 import os
+
 import cv2
 import face_recognition
 import numpy as np
-from numpy import ndarray
 from fastapi import UploadFile
+from numpy import ndarray
 
 
 # Folder where the known images are stored
