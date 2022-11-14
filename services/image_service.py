@@ -36,11 +36,6 @@ def delete_image_from_path(image_path: str):
     return False
 
 
-# Test
-def main():
-    print(get_all_known_images())
-
-
 # Wrapper class for the service
 class ImageService:
     def save_image(picture: UploadFile):
@@ -51,7 +46,3 @@ class ImageService:
 
     def delete_image(path):
         return delete_image_from_path(path)
-
-
-if __name__ == "__main__":
-    main()

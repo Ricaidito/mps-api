@@ -19,11 +19,6 @@ app.add_middleware(
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 
-@app.get("/")
-def index():
-    return {"swagger": "http://127.0.0.1:8000/docs"}
-
-
 @app.get("/get-images")
 def get_all_images():
     images = ImageService.get_all_images()

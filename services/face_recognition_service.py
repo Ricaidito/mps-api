@@ -2,14 +2,12 @@ import os
 import cv2
 import face_recognition
 import numpy as np
-from typing import Any
 from numpy import ndarray
 from fastapi import UploadFile
 
 
 # Folder where the known images are stored
 KNOWN_IMAGES_FOLDER_PATH = "./images"
-TEST_PATH = "./images/test.jpg"
 
 
 # Load all the known images and get their paths and file names
@@ -45,28 +43,6 @@ def get_matches(results: list[bool], image_files: list[str]) -> list[str]:
             matches.append(match)
 
     return matches
-
-
-# Do the face recognition given an image and it's path to compare
-def recognize_by_image_path(image_to_compare_path: str) -> dict[str, Any]:
-    images, paths = load_images()
-    encodings = encode_images(paths)
-
-    img = cv2.imread(image_to_compare_path)
-    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_econding = face_recognition.face_encodings(rgb_img)[0]
-
-    results = face_recognition.compare_faces(encodings, img_econding)
-
-    matches = get_matches(results, images)
-
-    return {
-        "image": image_to_compare_path,
-        "foundMatch": any(results),
-        "matches": matches,
-        "resultsArray": results,
-        "numberOfImagesCompared": len(results)
-    }
 
 
 # Do the face recognition given an image uploaded by the user
@@ -105,20 +81,7 @@ async def recognize_by_image_file(person_image: UploadFile):
     }
 
 
-# Test
-def main():
-    result = recognize_by_image_path(TEST_PATH)
-    print(result)
-
-
 # Wrapper class for the service
 class FaceRecognitionService:
-    def recognize_by_image_path(path: str = TEST_PATH):
-        return recognize_by_image_path(path)
-
     def recognize_by_image(image: UploadFile):
         return recognize_by_image_file(image)
-
-
-if __name__ == "__main__":
-    main()
